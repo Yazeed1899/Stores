@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#65000b" />
+  <title>جلسات الشاطئ الجنوبي | الدخل والمصروفات</title>
+  <style>
+    :root {
+      --primary: #8f0012;
+      --primary-dark: #65000b;
+      --primary-soft: #fae9eb;
+      --bg: #faf7f4;
+      --card: #ffffff;
+      --text: #351a1d;
+      --muted: #79676a;
+      --border: #eadfe0;
+      --danger: #c62828;
+      --danger-soft: #fff0ed;
+      --success: #8f0012;
+      --shadow: 0 8px 24px rgba(71, 0, 12, .08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #37000a, #790012);
+      color: #fff;
+      padding: 28px 0 34px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 118px;
+      height: 86px;
+      flex: 0 0 auto;
+      object-fit: contain;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: .5px;
+      color: #f5d24a;
+      text-shadow: 0 1px 2px rgba(0,0,0,.2);
+    }
+    .brand p {
+      margin: 4px 0 0;
+      color: #f8e8e8;
+      font-size: 14px;
+    }
+
+    .month-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.12);
+      padding: 10px;
+      border-radius: 12px;
+    }
+    .month-control label { font-size: 13px; }
+    .month-control input {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 10px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    main { padding: 24px 0 45px; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: -38px;
+      position: relative;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .summary-card .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .summary-card .value {
+      font-size: 24px;
+      font-weight: 800;
+      direction: ltr;
+      text-align: right;
+    }
+    .summary-card.cash { border-top: 4px solid #9f0012; }
+    .summary-card.network { border-top: 4px solid #e2b900; }
+    .summary-card.expenses { border-top: 4px solid #c62828; }
+    .summary-card.net { border-top: 4px solid #65000b; }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+    .section-title h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+    .section-title span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label {
+      font-size: 13px;
+      color: #60484b;
+      font-weight: 700;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fdf9f8;
+      border-radius: 10px;
+      padding: 11px 12px;
+      outline: none;
+      transition: .2s;
+    }
+    .field textarea { min-height: 72px; resize: vertical; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(143,0,18,.12);
+      background: #fff;
+    }
+
+    .actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      transition: .2s;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { background: #f5e9e9; color: #5c3237; }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); }
+    .btn-small { padding: 7px 11px; font-size: 12px; }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+    .report-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+      gap: 12px;
+      align-items: end;
+    }
+    .report-period-input { display: grid; }
+    .report-period-input[hidden] { display: none; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: #fff;
+    }
+    th, td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+      vertical-align: middle;
+    }
+    th {
+      background: #f8eff0;
+      color: #60484b;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    td { font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .money { direction: ltr; text-align: right; white-space: nowrap; }
+    .expense-text { color: var(--danger); }
+    .muted { color: var(--muted); }
+    .empty {
+      text-align: center;
+      padding: 34px 15px;
+      color: var(--muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 22px;
+      background: #1f2937;
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: .25s;
+      z-index: 20;
+      font-size: 13px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .auth-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at top, #f7e4e5, transparent 58%), var(--bg);
+    }
+    .auth-card {
+      width: min(100%, 440px);
+      padding: 30px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(71, 0, 12, .12);
+    }
+    .auth-logo {
+      display: block;
+      width: 154px;
+      height: 112px;
+      margin: 0 auto 12px;
+      object-fit: contain;
+    }
+    .auth-card h1 {
+      margin: 0;
+      text-align: center;
+      color: var(--primary-dark);
+      font-size: 25px;
+    }
+    .auth-description {
+      margin: 8px 0 22px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+    .auth-form { display: grid; gap: 15px; }
+    .auth-message {
+      min-height: 1.7em;
+      margin: 0;
+      color: var(--danger);
+      font-size: 13px;
+    }
+    .auth-card .btn { width: 100%; }
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .security-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 850px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+      .header-row { align-items: flex-start; flex-direction: column; }
+      .header-tools { width: 100%; flex-wrap: wrap; }
+      .month-control { width: 100%; justify-content: space-between; }
+      .month-control input { flex: 1; }
+    }
+
+    @media (max-width: 560px) {
+      .container { width: min(100% - 20px, 1180px); }
+      header { padding: 22px 0 30px; }
+      .brand-logo { width: 88px; height: 68px; }
+      .brand { gap: 11px; }
+      .brand p { font-size: 12px; }
+      .summary-grid { grid-template-columns: 1fr 1fr; gap: 9px; }
+      .summary-card { padding: 14px; }
+      .summary-card .value { font-size: 19px; }
+      .form-grid, .filter-row { grid-template-columns: 1fr; }
+      .section { padding: 15px; }
+      .section-title { align-items: flex-start; flex-direction: column; }
+      .actions .btn { flex: 1; }
+      .security-fields { grid-template-columns: 1fr; }
+      .auth-card { padding: 23px; }
+      .report-controls { grid-template-columns: 1fr; }
+    }
+
+    #printReport { display: none; }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 14mm 12mm;
+      }
+
+      body {
+        background: #fff;
+        color: #261f18;
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+        font-size: 10pt;
+        line-height: 1.5;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      body > *:not(#printReport) { display: none !important; }
+      body > #printReport {
+        display: block !important;
+        width: 100%;
+      }
+      .print-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #8f0012;
+      }
+      .print-logo {
+        width: 120px;
+        height: 86px;
+        object-fit: contain;
+      }
+      .print-brand h1 {
+        margin: 0;
+        color: #65000b;
+        font-size: 24pt;
+      }
+      .print-brand p {
+        margin: 3px 0 0;
+        color: #79676a;
+        font-size: 10pt;
+      }
+      .print-period {
+        margin: 18px 0 12px;
+        color: #65000b;
+        font-size: 18pt;
+      }
+      .print-meta {
+        margin: -5px 0 15px;
+        color: #79676a;
+        font-size: 9pt;
+      }
+      .print-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin: 0 0 18px;
+      }
+      .print-summary-card {
+        padding: 10px;
+        border: 1px solid #eadfe0;
+        border-top: 3px solid #9f0012;
+        border-radius: 7px;
+        break-inside: avoid;
+      }
+      .print-summary-card:nth-child(2) { border-top-color: #e2b900; }
+      .print-summary-card:nth-child(3) { border-top-color: #c62828; }
+      .print-summary-card:nth-child(4) { border-top-color: #65000b; }
+      .print-summary-label {
+        margin-bottom: 4px;
+        color: #79676a;
+        font-size: 8pt;
+      }
+      .print-summary-value {
+        direction: ltr;
+        text-align: right;
+        font-size: 11pt;
+        font-weight: 700;
+      }
+      .print-table-title {
+        margin: 0 0 8px;
+        color: #65000b;
+        font-size: 13pt;
+      }
+      .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      .print-table thead { display: table-header-group; }
+      .print-table tr { break-inside: avoid; }
+      .print-table th,
+      .print-table td {
+        padding: 7px 6px;
+        border: 1px solid #eadfe0;
+        text-align: right;
+        vertical-align: top;
+        overflow-wrap: anywhere;
+        font-size: 8pt;
+      }
+      .print-table th {
+        background: #faeff0 !important;
+        color: #5c3237;
+        font-weight: 700;
+      }
+      .print-table .print-money {
+        direction: ltr;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .print-empty {
+        padding: 18px;
+        border: 1px solid #eadfe0;
+        color: #79676a;
+        text-align: center;
+      }
+      .print-footer {
+        margin-top: 14px;
+        padding-top: 8px;
+        border-top: 1px solid #eadfe0;
+        color: #79676a;
+        font-size: 8pt;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="auth-screen" id="authScreen" aria-labelledby="authTitle">
+    <div class="auth-card">
+      <img class="auth-logo" src="Logo-transparent.png" alt="شعار جلسات الشاطئ" />
+      <h1 id="authTitle">تسجيل الدخول</h1>
+      <p class="auth-description" id="authDescription"></p>
+      <form id="authForm" class="auth-form">
+        <div class="field">
+          <label for="authUsername">اسم المستخدم</label>
+          <input id="authUsername" type="text" autocomplete="username" required maxlength="64" />
+        </div>
+        <div class="field">
+          <label for="authPassword">كلمة المرور</label>
+          <input id="authPassword" type="password" autocomplete="current-password" required minlength="8" />
+        </div>
+        <div class="field" id="authConfirmField" hidden>
+          <label for="authPasswordConfirm">تأكيد كلمة المرور</label>
+          <input id="authPasswordConfirm" type="password" autocomplete="new-password" minlength="8" />
+        </div>
+        <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+        <button class="btn btn-primary" type="submit" id="authSubmit">دخول</button>
+      </form>
+      <a class="btn btn-secondary home-link" href="../index.html">الصفحة الرئيسية</a>
+    </div>
+  </section>
+
+  <div id="appShell" hidden>
+    <header>
+      <div class="container header-row">
+        <div class="brand">
+          <img class="brand-logo" src="Logo-transparent.png" alt="شعار جلسات الشاطئ" />
+          <div>
+            <h1>جلسات الشاطئ الجنوبي</h1>
+            <p>إدارة الدخل والمصروفات اليومية</p>
+          </div>
+        </div>
+        <div class="header-tools">
+          <div class="month-control">
+            <label for="dashboardMonth">الشهر:</label>
+            <input id="dashboardMonth" type="month" />
+          </div>
+          <button class="btn btn-secondary" type="button" id="securityBtn">الأمان</button>
+          <button class="btn btn-secondary" type="button" id="logoutBtn">تسجيل الخروج</button>
+          <a class="btn btn-secondary home-link" href="../index.html">الصفحة الرئيسية</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+    <section class="summary-grid" aria-label="الملخص الشهري">
+      <div class="summary-card cash">
+        <div class="label">إجمالي دخل الكاش</div>
+        <div class="value" id="totalCash">0.00</div>
+      </div>
+      <div class="summary-card network">
+        <div class="label">إجمالي دخل الشبكة</div>
+        <div class="value" id="totalNetwork">0.00</div>
+      </div>
+      <div class="summary-card expenses">
+        <div class="label">إجمالي المصروفات</div>
+        <div class="value" id="totalExpenses">0.00</div>
+      </div>
+      <div class="summary-card net">
+        <div class="label">صافي الدخل</div>
+        <div class="value" id="netIncome">0.00</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <div>
+          <h2>طباعة تقرير</h2>
+          <span>اطبع تقريرًا منسقًا للشهر أو للسنة مع الشعار والملخص والعمليات.</span>
+        </div>
+      </div>
+      <div class="report-controls">
+        <div class="field">
+          <label for="reportType">نوع التقرير</label>
+          <select id="reportType">
+            <option value="month">تقرير شهري</option>
+            <option value="year">تقرير سنوي</option>
+          </select>
+        </div>
+        <div class="field report-period-input" id="reportMonthField">
+          <label for="reportMonth">الشهر</label>
+          <input id="reportMonth" type="month" />
+        </div>
+        <div class="field report-period-input" id="reportYearField" hidden>
+          <label for="reportYear">السنة</label>
+          <input id="reportYear" type="number" min="1900" max="9999" step="1" inputmode="numeric" />
+        </div>
+        <button class="btn btn-primary" type="button" id="printReportBtn">طباعة التقرير</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <div>
+          <h2 id="formTitle">إضافة عملية جديدة</h2>
+          <span>سجل دخل ومصروفات اليوم في عملية واحدة</span>
+        </div>
+      </div>
+
+      <form id="transactionForm">
+        <input type="hidden" id="editId" />
+        <div class="form-grid">
+          <div class="field">
+            <label for="date">التاريخ</label>
+            <input id="date" type="date" required />
+          </div>
+          <div class="field">
+            <label for="cash">الدخل النقدي (كاش)</label>
+            <input id="cash" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label for="network">الدخل عن طريق الشبكة</label>
+            <input id="network" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label for="expense">المصروفات</label>
+            <input id="expense" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" />
+          </div>
+          <div class="field full">
+            <label for="note">وصف / ملاحظة المصروف</label>
+            <textarea id="note" placeholder="مثال: شراء بضاعة، راتب موظف، فاتورة كهرباء..."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" id="saveBtn">حفظ العملية</button>
+          <button class="btn btn-secondary" type="button" id="cancelBtn" hidden>إلغاء التعديل</button>
+        </div>
+      </form>
+
+      <div class="note">
+        يتم حفظ البيانات تلقائيًا داخل Local Storage في هذا المتصفح، ولا يتم إرسالها إلى أي خادم.
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <div>
+          <h2>العمليات المسجلة</h2>
+          <span id="recordsCount">0 عملية</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <div class="field">
+          <label for="filterMonth">عرض شهر</label>
+          <input id="filterMonth" type="month" />
+        </div>
+        <div class="field">
+          <label for="searchDate">بحث بالتاريخ</label>
+          <input id="searchDate" type="date" />
+        </div>
+        <button class="btn btn-secondary" type="button" id="clearFilters">إظهار كل العمليات</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>الكاش</th>
+              <th>الشبكة</th>
+              <th>المصروف</th>
+              <th>ملاحظة المصروف</th>
+              <th>صافي العملية</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="securitySection" hidden>
+      <div class="section-title">
+        <div>
+          <h2>الأمان</h2>
+          <span>تحديث كلمة مرور هذا الحساب</span>
+        </div>
+        <button class="btn btn-secondary" type="button" id="closeSecurityBtn">العودة</button>
+      </div>
+      <form id="securityGateForm" class="auth-form">
+        <div class="field">
+          <label for="currentPassword">أدخل كلمة المرور الحالية للمتابعة</label>
+          <input id="currentPassword" type="password" autocomplete="current-password" required />
+        </div>
+        <p class="auth-message" id="securityGateMessage" role="status" aria-live="polite"></p>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" id="securityGateSubmit">متابعة</button>
+        </div>
+      </form>
+      <form id="passwordForm" hidden>
+        <div class="security-fields">
+          <div class="field">
+            <label for="newPassword">كلمة المرور الجديدة (8 أحرف على الأقل)</label>
+            <input id="newPassword" type="password" autocomplete="new-password" minlength="8" required />
+          </div>
+          <div class="field">
+            <label for="newPasswordConfirm">تأكيد كلمة المرور الجديدة</label>
+            <input id="newPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required />
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">تغيير كلمة المرور</button>
+        </div>
+      </form>
+    </section>
+    </main>
+  </div>
+
+  <div id="printReport" aria-hidden="true"></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (() => {
+      const DATABASE_NAME = `south_seating_db`;
+      const SHARED_DATABASE_NAME = "south_seating_db";
+      const DATABASE_VERSION = 1;
+      const OBJECT_STORE_NAME = "appData";
+      const TRANSACTIONS_KEY = "transactions";
+      const AUTH_KEY = "auth";
+      const LOGIN_STATE_KEY = "loggedIn";
+      const SHARED_MIGRATION_KEY = "sharedDatabaseMigrated";
+      const LEGACY_MIGRATION_KEY = "legacyStorageMigrated";
+      const LEGACY_STORAGE_KEY = "south_seating_db_transactions_v1";
+      const LEGACY_AUTH_STORAGE_KEY = "south_seating_db_auth_v1";
+      const PBKDF2_ITERATIONS = 210000;
+
+      const $ = (id) => document.getElementById(id);
+      const authForm = $("authForm");
+      const passwordForm = $("passwordForm");
+      const securityGateForm = $("securityGateForm");
+      const form = $("transactionForm");
+      const dashboardMonth = $("dashboardMonth");
+      const filterMonth = $("filterMonth");
+      const searchDate = $("searchDate");
+      const tbody = $("transactionsBody");
+      const reportType = $("reportType");
+      const reportMonth = $("reportMonth");
+      const reportYear = $("reportYear");
+      const printReport = $("printReport");
+
+      let authRecord = null;
+      let authReady = false;
+      let transactions = [];
+      let securityUnlocked = false;
+      let database = null;
+      $("authSubmit").disabled = true;
+
+      function validateAuthRecord(record) {
+        if (record === null || record === undefined) return null;
+        if (
+          !record ||
+          typeof record.username !== "string" ||
+          typeof record.salt !== "string" ||
+          typeof record.passwordHash !== "string" ||
+          !Number.isInteger(record.iterations)
+        ) {
+          throw new Error("بيانات الحساب المحفوظة غير صالحة.");
+        }
+        return record;
+      }
+
+      function openDatabase() {
+        return new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error("IndexedDB غير متاح في هذا المتصفح."));
+            return;
+          }
+
+          const request = indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
+          request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(OBJECT_STORE_NAME)) {
+              db.createObjectStore(OBJECT_STORE_NAME, { keyPath: "key" });
+            }
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error("تعذر فتح قاعدة البيانات."));
+          request.onblocked = () => reject(new Error("فتح قاعدة البيانات متوقف بسبب تبويب آخر."));
+        });
+      }
+
+      function readStoredValue(key) {
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(OBJECT_STORE_NAME, "readonly");
+          const request = transaction.objectStore(OBJECT_STORE_NAME).get(key);
+          request.onsuccess = () => resolve(request.result ? request.result.value : undefined);
+          request.onerror = () => reject(request.error || new Error("تعذرت قراءة البيانات."));
+          transaction.onerror = () => reject(transaction.error || new Error("تعذرت قراءة البيانات."));
+        });
+      }
+
+      function writeStoredValue(key, value) {
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(OBJECT_STORE_NAME, "readwrite");
+          transaction.objectStore(OBJECT_STORE_NAME).put({ key, value });
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = () => reject(transaction.error || new Error("تعذر حفظ البيانات."));
+          transaction.onabort = () => reject(transaction.error || new Error("تم إلغاء حفظ البيانات."));
+        });
+      }
+
+      function readSharedDatabaseValues() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(SHARED_DATABASE_NAME);
+          request.onsuccess = () => {
+            const sharedDatabase = request.result;
+            if (!sharedDatabase.objectStoreNames.contains(OBJECT_STORE_NAME)) {
+              sharedDatabase.close();
+              resolve([]);
+              return;
+            }
+
+            const transaction = sharedDatabase.transaction(OBJECT_STORE_NAME, "readonly");
+            const valuesRequest = transaction.objectStore(OBJECT_STORE_NAME).getAll();
+            valuesRequest.onsuccess = () => {
+              sharedDatabase.close();
+              resolve(valuesRequest.result);
+            };
+            valuesRequest.onerror = () => {
+              sharedDatabase.close();
+              reject(valuesRequest.error || new Error("تعذرت قراءة بيانات النسخة السابقة."));
+            };
+            transaction.onabort = () => {
+              sharedDatabase.close();
+              reject(transaction.error || new Error("تعذرت قراءة بيانات النسخة السابقة."));
+            };
+          };
+          request.onerror = () => reject(request.error || new Error("تعذر فتح قاعدة البيانات السابقة."));
+        });
+      }
+
+      async function migrateSharedDatabase() {
+        if (await readStoredValue(SHARED_MIGRATION_KEY) !== undefined) return;
+
+        const sharedValues = await readSharedDatabaseValues();
+        for (const storedEntry of sharedValues) {
+          if (storedEntry.key !== AUTH_KEY && storedEntry.key !== TRANSACTIONS_KEY) continue;
+          if (await readStoredValue(storedEntry.key) === undefined) {
+            await writeStoredValue(storedEntry.key, storedEntry.value);
+          }
+        }
+        await writeStoredValue(SHARED_MIGRATION_KEY, true);
+      }
+
+      async function migrateLegacyData() {
+        if (await readStoredValue(LEGACY_MIGRATION_KEY) !== undefined) return;
+
+        let legacyAuth;
+        let legacyTransactions;
+        try {
+          legacyAuth = localStorage.getItem(LEGACY_AUTH_STORAGE_KEY);
+          legacyTransactions = localStorage.getItem(LEGACY_STORAGE_KEY);
+        } catch (error) {
+          console.warn("تعذرت قراءة البيانات القديمة من التخزين المحلي:", error);
+          return;
+        }
+
+        if (legacyAuth !== null && (await readStoredValue(AUTH_KEY)) === undefined) {
+          await writeStoredValue(AUTH_KEY, validateAuthRecord(JSON.parse(legacyAuth)));
+        }
+
+        if (legacyTransactions !== null && (await readStoredValue(TRANSACTIONS_KEY)) === undefined) {
+          const parsedTransactions = JSON.parse(legacyTransactions);
+          if (!Array.isArray(parsedTransactions)) {
+            throw new Error("بيانات العمليات المحفوظة غير صالحة.");
+          }
+          await writeStoredValue(TRANSACTIONS_KEY, parsedTransactions);
+        }
+
+        await writeStoredValue(LEGACY_MIGRATION_KEY, true);
+      }
+
+      async function readAuthRecord() {
+        return validateAuthRecord(await readStoredValue(AUTH_KEY));
+      }
+
+      function configureAuthScreen() {
+        const isFirstVisit = !authRecord;
+        $("authTitle").textContent = isFirstVisit ? "إنشاء الحساب" : "تسجيل الدخول";
+        $("authDescription").textContent = isFirstVisit
+          ? "أنشئ حسابًا محليًا لبدء استخدام الموقع."
+          : "أدخل بيانات حسابك لمتابعة استخدام الموقع.";
+        $("authSubmit").textContent = isFirstVisit ? "إنشاء الحساب والدخول" : "دخول";
+        $("authConfirmField").hidden = !isFirstVisit;
+        $("authPassword").autocomplete = isFirstVisit ? "new-password" : "current-password";
+        $("authPasswordConfirm").required = isFirstVisit;
+      }
+
+      function encodeBase64(bytes) {
+        return btoa(Array.from(bytes, byte => String.fromCharCode(byte)).join(""));
+      }
+
+      function decodeBase64(value) {
+        return Uint8Array.from(atob(value), character => character.charCodeAt(0));
+      }
+
+      async function hashPassword(password, salt) {
+        if (!crypto.subtle) {
+          throw new Error("تشفير كلمات المرور غير متاح في هذا المتصفح.");
+        }
+
+        const keyMaterial = await crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(password),
+          "PBKDF2",
+          false,
+          ["deriveBits"]
+        );
+        const hash = await crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            salt,
+            iterations: PBKDF2_ITERATIONS,
+            hash: "SHA-256"
+          },
+          keyMaterial,
+          256
+        );
+        return encodeBase64(new Uint8Array(hash));
+      }
+
+      async function createAuthRecord(username, password) {
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        return {
+          username,
+          salt: encodeBase64(salt),
+          passwordHash: await hashPassword(password, salt),
+          iterations: PBKDF2_ITERATIONS
+        };
+      }
+
+      async function saveAuthRecord(record) {
+        await writeStoredValue(AUTH_KEY, record);
+        const savedRecord = await readAuthRecord();
+        if (
+          !savedRecord ||
+          savedRecord.username !== record.username ||
+          savedRecord.passwordHash !== record.passwordHash
+        ) {
+          throw new Error("تعذر التحقق من حفظ بيانات الحساب.");
+        }
+        return savedRecord;
+      }
+
+      async function verifyPassword(password, record) {
+        if (!crypto.subtle) {
+          throw new Error("تشفير كلمات المرور غير متاح في هذا المتصفح.");
+        }
+
+        const keyMaterial = await crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(password),
+          "PBKDF2",
+          false,
+          ["deriveBits"]
+        );
+        const hash = await crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            salt: decodeBase64(record.salt),
+            iterations: record.iterations,
+            hash: "SHA-256"
+          },
+          keyMaterial,
+          256
+        );
+        const actual = new Uint8Array(hash);
+        const expected = decodeBase64(record.passwordHash);
+        if (actual.length !== expected.length) return false;
+
+        let difference = 0;
+        for (let index = 0; index < actual.length; index++) {
+          difference |= actual[index] ^ expected[index];
+        }
+        return difference === 0;
+      }
+
+      async function enterApp() {
+        transactions = await loadTransactions();
+        await writeStoredValue(LOGIN_STATE_KEY, true);
+        $("authScreen").hidden = true;
+        $("appShell").hidden = false;
+        refresh();
+        $("date").value = todayISO();
+        dashboardMonth.value = currentMonthISO();
+        reportMonth.value = currentMonthISO();
+        reportYear.value = todayISO().slice(0, 4);
+        updateSummary();
+      }
+
+      authForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!authReady) return;
+
+        const username = $("authUsername").value.trim();
+        const password = $("authPassword").value;
+        const message = $("authMessage");
+        message.textContent = "";
+
+        if ($("authSubmit").disabled) return;
+
+        if (!username) {
+          message.textContent = "أدخل اسم المستخدم.";
+          return;
+        }
+
+        $("authSubmit").disabled = true;
+        try {
+          if (!authRecord) {
+            if (password.length < 8) {
+              message.textContent = "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.";
+              return;
+            }
+            if (password !== $("authPasswordConfirm").value) {
+              message.textContent = "كلمتا المرور غير متطابقتين.";
+              return;
+            }
+
+            const newRecord = await createAuthRecord(username, password);
+            authRecord = await saveAuthRecord(newRecord);
+            configureAuthScreen();
+          } else if (
+            username !== authRecord.username ||
+            !(await verifyPassword(password, authRecord))
+          ) {
+            message.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة.";
+            return;
+          }
+
+          authForm.reset();
+          await enterApp();
+        } catch (error) {
+          console.error("تعذر إكمال تسجيل الدخول:", error);
+          message.textContent = "تعذر إكمال العملية أو حفظ الحساب. تحقق من دعم المتصفح لتشفير البيانات والسماح بالتخزين.";
+        } finally {
+          if (authReady) {
+            $("authSubmit").disabled = false;
+          }
+        }
+      });
+
+      $("logoutBtn").addEventListener("click", async () => {
+        try {
+          await writeStoredValue(LOGIN_STATE_KEY, false);
+        } catch (error) {
+          console.error("تعذر حفظ تسجيل الخروج:", error);
+          showToast("تعذر تسجيل الخروج. تحقق من إعدادات التخزين في المتصفح.");
+          return;
+        }
+
+        transactions = [];
+        closeSecurity();
+        $("appShell").hidden = true;
+        $("authScreen").hidden = false;
+        authForm.reset();
+        configureAuthScreen();
+        $("authMessage").textContent = "";
+        $("authUsername").focus();
+      });
+
+      function closeSecurity() {
+        securityUnlocked = false;
+        $("securitySection").hidden = true;
+        $("securityGateMessage").textContent = "";
+        securityGateForm.reset();
+        passwordForm.reset();
+        passwordForm.hidden = true;
+        securityGateForm.hidden = false;
+      }
+
+      $("securityBtn").addEventListener("click", () => {
+        closeSecurity();
+        $("securitySection").hidden = false;
+        $("securitySection").scrollIntoView({ behavior: "smooth", block: "start" });
+        $("currentPassword").focus();
+      });
+      $("closeSecurityBtn").addEventListener("click", closeSecurity);
+
+      securityGateForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const message = $("securityGateMessage");
+        message.textContent = "";
+        $("securityGateSubmit").disabled = true;
+
+        try {
+          if (!(await verifyPassword($("currentPassword").value, authRecord))) {
+            message.textContent = "كلمة المرور الحالية غير صحيحة.";
+            $("currentPassword").focus();
+            return;
+          }
+
+          securityUnlocked = true;
+          securityGateForm.hidden = true;
+          passwordForm.hidden = false;
+          passwordForm.reset();
+          $("newPassword").focus();
+        } catch (error) {
+          console.error("تعذر التحقق من كلمة المرور الحالية:", error);
+          message.textContent = "تعذر التحقق من كلمة المرور. تحقق من دعم المتصفح لتشفير البيانات.";
+        } finally {
+          $("securityGateSubmit").disabled = false;
+        }
+      });
+
+      passwordForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!securityUnlocked || passwordForm.hidden) return;
+        const newPassword = $("newPassword").value;
+
+        if (newPassword.length < 8) {
+          showToast("يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل.");
+          return;
+        }
+        if (newPassword !== $("newPasswordConfirm").value) {
+          showToast("كلمتا المرور الجديدتان غير متطابقتين.");
+          return;
+        }
+
+        try {
+          const updatedRecord = await createAuthRecord(authRecord.username, newPassword);
+          authRecord = await saveAuthRecord(updatedRecord);
+          showToast("تم تغيير كلمة المرور بنجاح.");
+          closeSecurity();
+        } catch (error) {
+          console.error("تعذر تغيير كلمة المرور:", error);
+          showToast("تعذر تغيير كلمة المرور. تحقق من إعدادات التخزين في المتصفح.");
+        }
+      });
+
+      async function loadTransactions() {
+        const data = await readStoredValue(TRANSACTIONS_KEY);
+        if (data === undefined) return [];
+        if (!Array.isArray(data)) {
+          throw new Error("بيانات العمليات المحفوظة غير صالحة.");
+        }
+        return data;
+      }
+
+      function saveTransactions() {
+        return writeStoredValue(TRANSACTIONS_KEY, transactions);
+      }
+
+      function formatMoney(value) {
+        return Number(value || 0).toLocaleString("ar-SA", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+
+      function todayISO() {
+        const d = new Date();
+        const offset = d.getTimezoneOffset();
+        return new Date(d.getTime() - offset * 60000).toISOString().slice(0, 10);
+      }
+
+      function currentMonthISO() {
+        return todayISO().slice(0, 7);
+      }
+
+      function reportTransactions() {
+        const type = reportType.value;
+        const selectedMonth = reportMonth.value;
+        const selectedYear = reportYear.value;
+
+        if (type === "month" && !/^\d{4}-\d{2}$/.test(selectedMonth)) {
+          showToast("يرجى اختيار شهر صحيح للتقرير.");
+          reportMonth.focus();
+          return null;
+        }
+        if (type === "year" && (!/^\d{4}$/.test(selectedYear) || Number(selectedYear) < 1900 || Number(selectedYear) > 9999)) {
+          showToast("يرجى إدخال سنة صحيحة للتقرير.");
+          reportYear.focus();
+          return null;
+        }
+
+        const period = type === "month" ? selectedMonth : selectedYear;
+        const list = transactions.filter(transaction =>
+          type === "month"
+            ? monthOf(transaction.date) === period
+            : String(transaction.date || "").slice(0, 4) === period
+        );
+        list.sort((a, b) => {
+          if (a.date !== b.date) return a.date.localeCompare(b.date);
+          return (a.createdAt || 0) - (b.createdAt || 0);
+        });
+        return { type, period, list };
+      }
+
+      function renderPrintReport(report) {
+        const totals = report.list.reduce((summary, transaction) => {
+          summary.cash += Number(transaction.cash || 0);
+          summary.network += Number(transaction.network || 0);
+          summary.expenses += Number(transaction.expense || 0);
+          return summary;
+        }, { cash: 0, network: 0, expenses: 0 });
+        const net = totals.cash + totals.network - totals.expenses;
+        const periodLabel = report.type === "month"
+          ? new Intl.DateTimeFormat("ar-SA", {
+              calendar: "gregory",
+              year: "numeric",
+              month: "long"
+            }).format(new Date(Number(report.period.slice(0, 4)), Number(report.period.slice(5, 7)) - 1, 1))
+          : `سنة ${report.period}`;
+        const rows = report.list.map(transaction => {
+          const transactionNet = Number(transaction.cash || 0) +
+            Number(transaction.network || 0) -
+            Number(transaction.expense || 0);
+          return `
+            <tr>
+              <td>${escapeHTML(transaction.date)}</td>
+              <td class="print-money">${formatMoney(transaction.cash)}</td>
+              <td class="print-money">${formatMoney(transaction.network)}</td>
+              <td class="print-money">${formatMoney(transaction.expense)}</td>
+              <td>${transaction.note ? escapeHTML(transaction.note) : "—"}</td>
+              <td class="print-money"><strong>${formatMoney(transactionNet)}</strong></td>
+            </tr>`;
+        }).join("");
+
+        printReport.innerHTML = `
+          <header class="print-header">
+            <img class="print-logo" src="Logo-transparent.png" alt="شعار جلسات الشاطئ" />
+            <div class="print-brand">
+              <h1> جلسات الشاطئ الجنوبي</h1>
+              <p>جلسات الشاطئ الجنوبي</p>
+            </div>
+          </header>
+          <h2 class="print-period">التقرير ${report.type === "month" ? "الشهري" : "السنوي"} — ${escapeHTML(periodLabel)}</h2>
+          <p class="print-meta">عدد العمليات: ${report.list.length.toLocaleString("ar-SA")}</p>
+          <section class="print-summary" aria-label="ملخص التقرير">
+            <div class="print-summary-card">
+              <div class="print-summary-label">إجمالي دخل الكاش</div>
+              <div class="print-summary-value">${formatMoney(totals.cash)}</div>
+            </div>
+            <div class="print-summary-card">
+              <div class="print-summary-label">إجمالي دخل الشبكة</div>
+              <div class="print-summary-value">${formatMoney(totals.network)}</div>
+            </div>
+            <div class="print-summary-card">
+              <div class="print-summary-label">إجمالي المصروفات</div>
+              <div class="print-summary-value">${formatMoney(totals.expenses)}</div>
+            </div>
+            <div class="print-summary-card">
+              <div class="print-summary-label">صافي الدخل</div>
+              <div class="print-summary-value">${formatMoney(net)}</div>
+            </div>
+          </section>
+          <h3 class="print-table-title">تفاصيل العمليات</h3>
+          ${report.list.length ? `
+            <table class="print-table">
+              <thead>
+                <tr>
+                  <th>التاريخ</th>
+                  <th>الكاش</th>
+                  <th>الشبكة</th>
+                  <th>المصروف</th>
+                  <th>ملاحظة المصروف</th>
+                  <th>صافي العملية</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>` : '<div class="print-empty">لا توجد عمليات مسجلة لهذه الفترة.</div>'}
+          <footer class="print-footer">تم إعداد التقرير بتاريخ ${escapeHTML(todayISO())}.</footer>`;
+      }
+
+      function escapeHTML(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function monthOf(date) {
+        return String(date || "").slice(0, 7);
+      }
+
+      function filteredTransactions() {
+        let list = [...transactions];
+
+        if (filterMonth.value) {
+          list = list.filter(t => monthOf(t.date) === filterMonth.value);
+        }
+
+        if (searchDate.value) {
+          list = list.filter(t => t.date === searchDate.value);
+        }
+
+        return list.sort((a, b) => {
+          if (a.date !== b.date) return a.date.localeCompare(b.date);
+          return (a.createdAt || 0) - (b.createdAt || 0);
+        });
+      }
+
+      function monthTransactions(month) {
+        if (!month) return [];
+        return transactions.filter(t => monthOf(t.date) === month);
+      }
+
+      function updateSummary() {
+        const month = dashboardMonth.value;
+        const list = monthTransactions(month);
+
+        const cash = list.reduce((sum, t) => sum + Number(t.cash || 0), 0);
+        const network = list.reduce((sum, t) => sum + Number(t.network || 0), 0);
+        const expenses = list.reduce((sum, t) => sum + Number(t.expense || 0), 0);
+        const net = cash + network - expenses;
+
+        $("totalCash").textContent = formatMoney(cash);
+        $("totalNetwork").textContent = formatMoney(network);
+        $("totalExpenses").textContent = formatMoney(expenses);
+        $("netIncome").textContent = formatMoney(net);
+      }
+
+      function renderTable() {
+        const list = filteredTransactions();
+        $("recordsCount").textContent = `${list.length.toLocaleString("ar-SA")} عملية`;
+
+        if (!list.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="empty">لا توجد عمليات مطابقة للفلاتر الحالية.</td>
+            </tr>`;
+          return;
+        }
+
+        tbody.innerHTML = list.map(t => {
+          const net = Number(t.cash || 0) + Number(t.network || 0) - Number(t.expense || 0);
+          return `
+            <tr>
+              <td>${escapeHTML(t.date)}</td>
+              <td class="money">${formatMoney(t.cash)}</td>
+              <td class="money">${formatMoney(t.network)}</td>
+              <td class="money expense-text">${formatMoney(t.expense)}</td>
+              <td>${t.note ? escapeHTML(t.note) : '<span class="muted">—</span>'}</td>
+              <td class="money"><strong>${formatMoney(net)}</strong></td>
+              <td>
+                <button class="btn btn-secondary btn-small" onclick="editTransaction('${escapeHTML(t.id)}')">تعديل</button>
+                <button class="btn btn-danger btn-small" onclick="deleteTransaction('${escapeHTML(t.id)}')">حذف</button>
+              </td>
+            </tr>`;
+        }).join("");
+      }
+
+      function refresh() {
+        updateSummary();
+        renderTable();
+      }
+
+      function resetForm() {
+        form.reset();
+        $("editId").value = "";
+        $("date").value = todayISO();
+        $("formTitle").textContent = "إضافة عملية جديدة";
+        $("saveBtn").textContent = "حفظ العملية";
+        $("cancelBtn").hidden = true;
+      }
+
+      function showToast(message) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const date = $("date").value;
+        const cash = Math.max(0, Number($("cash").value || 0));
+        const network = Math.max(0, Number($("network").value || 0));
+        const expense = Math.max(0, Number($("expense").value || 0));
+        const note = $("note").value.trim();
+        const editId = $("editId").value;
+
+        if (!date) {
+          showToast("يرجى اختيار التاريخ.");
+          return;
+        }
+
+        if (cash === 0 && network === 0 && expense === 0) {
+          showToast("أدخل قيمة واحدة على الأقل.");
+          return;
+        }
+
+        if (expense > 0 && !note) {
+          showToast("يفضل كتابة وصف للمصروف.");
+          $("note").focus();
+          return;
+        }
+
+        const previousTransactions = [...transactions];
+        if (editId) {
+          const index = transactions.findIndex(t => t.id === editId);
+          if (index !== -1) {
+            transactions[index] = {
+              ...transactions[index],
+              date, cash, network, expense, note,
+              updatedAt: Date.now()
+            };
+          }
+        } else {
+          transactions.push({
+            id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+            date, cash, network, expense, note,
+            createdAt: Date.now()
+          });
+        }
+
+        $("saveBtn").disabled = true;
+        try {
+          await saveTransactions();
+        } catch (error) {
+          transactions = previousTransactions;
+          console.error("تعذر حفظ العملية:", error);
+          showToast("تعذر حفظ العملية. تحقق من إعدادات التخزين في المتصفح.");
+          return;
+        } finally {
+          $("saveBtn").disabled = false;
+        }
+
+        // إذا كانت العملية في شهر مختلف، نجعل لوحة الملخص على شهر العملية.
+        dashboardMonth.value = monthOf(date);
+        filterMonth.value = monthOf(date);
+        searchDate.value = "";
+
+        resetForm();
+        refresh();
+        showToast(editId ? "تم تعديل العملية بنجاح." : "تم حفظ العملية بنجاح.");
+      });
+
+      $("cancelBtn").addEventListener("click", resetForm);
+
+      dashboardMonth.addEventListener("change", updateSummary);
+      filterMonth.addEventListener("change", renderTable);
+      searchDate.addEventListener("change", renderTable);
+      reportType.addEventListener("change", () => {
+        $("reportMonthField").hidden = reportType.value !== "month";
+        $("reportYearField").hidden = reportType.value !== "year";
+      });
+      $("printReportBtn").addEventListener("click", () => {
+        const report = reportTransactions();
+        if (!report) return;
+
+        renderPrintReport(report);
+        window.print();
+      });
+
+      $("clearFilters").addEventListener("click", () => {
+        filterMonth.value = "";
+        searchDate.value = "";
+        renderTable();
+      });
+
+      window.editTransaction = function(id) {
+        const t = transactions.find(item => item.id === id);
+        if (!t) return;
+
+        $("editId").value = t.id;
+        $("date").value = t.date;
+        $("cash").value = t.cash || "";
+        $("network").value = t.network || "";
+        $("expense").value = t.expense || "";
+        $("note").value = t.note || "";
+
+        $("formTitle").textContent = "تعديل العملية";
+        $("saveBtn").textContent = "حفظ التعديل";
+        $("cancelBtn").hidden = false;
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      window.deleteTransaction = async function(id) {
+        const t = transactions.find(item => item.id === id);
+        if (!t) return;
+
+        const confirmed = confirm(`هل تريد حذف عملية ${t.date}؟`);
+        if (!confirmed) return;
+
+        const previousTransactions = transactions;
+        transactions = transactions.filter(item => item.id !== id);
+        try {
+          await saveTransactions();
+        } catch (error) {
+          transactions = previousTransactions;
+          console.error("تعذر حذف العملية:", error);
+          showToast("تعذر حذف العملية. تحقق من إعدادات التخزين في المتصفح.");
+          return;
+        }
+        refresh();
+        showToast("تم حذف العملية.");
+      };
+
+      async function initializeStorage() {
+        try {
+          database = await openDatabase();
+          await migrateSharedDatabase();
+          await migrateLegacyData();
+          authRecord = await readAuthRecord();
+          configureAuthScreen();
+          authReady = true;
+          $("authSubmit").disabled = false;
+          if (authRecord && await readStoredValue(LOGIN_STATE_KEY) === true) {
+            await enterApp();
+          }
+        } catch (error) {
+          authReady = false;
+          console.error("تعذر تهيئة التخزين:", error);
+          $("authMessage").textContent = "تعذرت تهيئة التخزين في هذا المتصفح. تحقق من إعدادات التخزين.";
+          $("authSubmit").disabled = true;
+        }
+      }
+
+      initializeStorage();
+
+    })();
+  </script>
+</body>
+</html>
